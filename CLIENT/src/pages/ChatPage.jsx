@@ -5,6 +5,9 @@ import { Send, User, Bot, Moon } from "lucide-react";
 
 function ChatPage() {
 
+  // Backend API URL from .env
+  const API = import.meta.env.VITE_API_URL;
+
   const { patientId } = useParams();
 
   const [patientName, setPatientName] = useState("");
@@ -18,12 +21,13 @@ function ChatPage() {
   useEffect(() => {
 
     const fetchPatient = async () => {
+
       try {
 
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          `http://localhost:5001/api/patients/${patientId}`,
+          `${API}/patients/${patientId}`,
           {
             headers: {
               authorization: token,
@@ -41,6 +45,7 @@ function ChatPage() {
         ]);
 
       } catch (error) {
+
         console.log(error);
       }
     };
@@ -50,9 +55,11 @@ function ChatPage() {
   }, [patientId]);
 
   useEffect(() => {
+
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
+
   }, [chat, loading]);
 
   const sendMessage = async () => {
@@ -75,19 +82,18 @@ function ChatPage() {
 
       const token = localStorage.getItem("token");
 
-const res = await axios.post(
-  "http://localhost:5001/api/chats",
-  {
-    message: currentMessage,
-    patientId,
-  },
-  {
-    headers: {
-      authorization: token,
-    },
-  }
-);
-
+      const res = await axios.post(
+        `${API}/chats`,
+        {
+          message: currentMessage,
+          patientId,
+        },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
 
       const aiReply = {
         sender: "patient",
@@ -115,18 +121,21 @@ const res = await axios.post(
   const handleKeyDown = (e) => {
 
     if (e.key === "Enter" && !e.shiftKey) {
+
       e.preventDefault();
       sendMessage();
     }
   };
 
   return (
+
     <div className="h-screen bg-black flex flex-col text-white">
 
       {/* Header */}
       <div className="bg-zinc-900 border-b border-zinc-800 px-6 py-4 flex items-center justify-between shadow-lg">
 
         <div>
+
           <h1 className="text-2xl font-bold">
             Virtual Patient Simulation
           </h1>
@@ -134,6 +143,7 @@ const res = await axios.post(
           <p className="text-zinc-400 text-sm mt-1">
             Patient: {patientName}
           </p>
+
         </div>
 
         <div className="flex items-center gap-3">
@@ -145,6 +155,7 @@ const res = await axios.post(
           <div className="bg-zinc-800 p-2 rounded-full border border-zinc-700">
             <Moon size={18} className="text-yellow-400" />
           </div>
+
         </div>
       </div>
 
@@ -177,11 +188,13 @@ const res = await axios.post(
                     : "bg-zinc-700"
                 }`}
               >
+
                 {
                   msg.sender === "doctor"
                     ? <User size={18} />
                     : <Bot size={18} />
                 }
+
               </div>
 
               <div
@@ -193,16 +206,19 @@ const res = await axios.post(
               >
 
                 <p className="text-sm font-semibold mb-1">
+
                   {
                     msg.sender === "doctor"
                       ? "Medical Student"
                       : patientName
                   }
+
                 </p>
 
                 <p className="text-[15px] leading-relaxed">
                   {msg.text}
                 </p>
+
               </div>
             </div>
           </div>
@@ -210,6 +226,7 @@ const res = await axios.post(
 
         {
           loading && (
+
             <div className="flex justify-start">
 
               <div className="flex gap-3 items-center">
@@ -219,10 +236,15 @@ const res = await axios.post(
                 </div>
 
                 <div className="bg-zinc-900 border border-zinc-800 px-4 py-3 rounded-2xl shadow-sm">
+
                   <div className="flex gap-1">
+
                     <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce"></span>
+
                     <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce delay-100"></span>
+
                     <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce delay-200"></span>
+
                   </div>
                 </div>
               </div>
@@ -231,6 +253,7 @@ const res = await axios.post(
         }
 
         <div ref={messagesEndRef}></div>
+
       </div>
 
       {/* Input */}
@@ -252,8 +275,11 @@ const res = await axios.post(
             disabled={loading}
             className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 text-white p-4 rounded-2xl transition"
           >
+
             <Send size={20} />
+
           </button>
+
         </div>
       </div>
     </div>

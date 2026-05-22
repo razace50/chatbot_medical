@@ -5,6 +5,9 @@ import { Stethoscope } from "lucide-react";
 
 function SignupPage() {
 
+  // Backend API URL from .env
+  const API = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -12,12 +15,13 @@ function SignupPage() {
   const [password, setPassword] = useState("");
 
   const handleSignup = async (e) => {
+
     e.preventDefault();
 
     try {
 
       const res = await axios.post(
-        "http://localhost:5001/api/auth/signup",
+        `${API}/auth/signup`,
         {
           name,
           email,
@@ -33,6 +37,7 @@ function SignupPage() {
       navigate("/dashboard");
 
     } catch (error) {
+
       console.log(error);
 
       alert(
@@ -43,13 +48,13 @@ function SignupPage() {
   };
 
   return (
+
     <div className="min-h-screen bg-black flex items-center justify-center px-4 overflow-hidden relative">
 
       {/* Glow Effects */}
       <div className="absolute w-96 h-96 bg-blue-600/20 blur-3xl rounded-full top-20 left-20"></div>
 
       <div className="absolute w-96 h-96 bg-purple-600/20 blur-3xl rounded-full bottom-10 right-10"></div>
-
 
       {/* Signup Card */}
       <form
@@ -61,11 +66,12 @@ function SignupPage() {
         <div className="flex justify-center mb-6">
 
           <div className="w-20 h-20 rounded-3xl bg-blue-600 flex items-center justify-center shadow-lg">
+
             <Stethoscope size={38} className="text-white" />
+
           </div>
 
         </div>
-
 
         {/* Heading */}
         <h1 className="text-4xl font-bold text-white text-center mb-2">
@@ -76,12 +82,12 @@ function SignupPage() {
           Create your medical simulator account
         </p>
 
-
         {/* Inputs */}
         <div className="space-y-5">
 
           {/* Name */}
           <div>
+
             <label className="block text-sm text-zinc-400 mb-2">
               Full Name
             </label>
@@ -93,11 +99,12 @@ function SignupPage() {
               onChange={(e) => setName(e.target.value)}
               className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
 
+          </div>
 
           {/* Email */}
           <div>
+
             <label className="block text-sm text-zinc-400 mb-2">
               Email
             </label>
@@ -109,11 +116,12 @@ function SignupPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
 
+          </div>
 
           {/* Password */}
           <div>
+
             <label className="block text-sm text-zinc-400 mb-2">
               Password
             </label>
@@ -125,8 +133,8 @@ function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
 
+          </div>
 
           {/* Signup Button */}
           <button
@@ -136,11 +144,12 @@ function SignupPage() {
             Create Account
           </button>
 
-
           {/* Login Link */}
           <div className="text-center pt-2">
+
             <p className="text-zinc-400">
-              Already have an account? {" "}
+
+              Already have an account?{" "}
 
               <Link
                 to="/"
@@ -148,7 +157,9 @@ function SignupPage() {
               >
                 Login
               </Link>
+
             </p>
+
           </div>
 
         </div>

@@ -5,6 +5,9 @@ import { Stethoscope } from "lucide-react";
 
 function LoginPage() {
 
+  // Backend API URL from .env
+  const API = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -17,7 +20,7 @@ function LoginPage() {
     try {
 
       const res = await axios.post(
-        "http://localhost:5001/api/auth/login",
+        `${API}/auth/login`,
         {
           email,
           password,
@@ -40,6 +43,7 @@ function LoginPage() {
   };
 
   return (
+
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
 
       {/* Background Glow */}
@@ -107,29 +111,29 @@ function LoginPage() {
 
           {/* Login Button */}
           <button
-  type="submit"
-  className="w-full bg-blue-600 hover:bg-blue-700 transition-all duration-300 rounded-2xl py-3 text-lg font-semibold text-white"
->
-  Login
-</button>
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition-all duration-300 rounded-2xl py-3 text-lg font-semibold text-white"
+          >
+            Login
+          </button>
 
+          {/* Signup Link */}
+          <div className="text-center pt-5">
 
-{/* Signup Link */}
-<div className="text-center pt-5">
+            <p className="text-zinc-400">
 
-  <p className="text-zinc-400">
-    New Doctor? {" "}
+              New Doctor?{" "}
 
-    <Link
-      to="/signup"
-      className="text-blue-400 hover:text-blue-300 font-medium"
-    >
-      Create Account
-    </Link>
+              <Link
+                to="/signup"
+                className="text-blue-400 hover:text-blue-300 font-medium"
+              >
+                Create Account
+              </Link>
 
-  </p>
+            </p>
 
-</div>
+          </div>
 
         </div>
 

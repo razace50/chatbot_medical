@@ -5,6 +5,9 @@ import { UserRound } from "lucide-react";
 
 function Dashboard() {
 
+  // Backend API URL from .env
+  const API = import.meta.env.VITE_API_URL;
+
   const [patients, setPatients] = useState([]);
 
   const navigate = useNavigate();
@@ -18,7 +21,7 @@ function Dashboard() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://localhost:5001/api/patients",
+          `${API}/patients`,
           {
             headers: {
               authorization: token,
@@ -29,6 +32,7 @@ function Dashboard() {
         setPatients(res.data);
 
       } catch (error) {
+
         console.log(error);
       }
     };
@@ -38,6 +42,7 @@ function Dashboard() {
   }, []);
 
   return (
+
     <div className="min-h-screen bg-black text-white p-8">
 
       <div className="max-w-6xl mx-auto">
@@ -68,7 +73,9 @@ function Dashboard() {
 
               {/* Icon */}
               <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-5">
+
                 <UserRound size={24} />
+
               </div>
 
               {/* Name */}
@@ -90,7 +97,9 @@ function Dashboard() {
                     key={index}
                     className="bg-zinc-800 text-zinc-300 text-sm px-3 py-1 rounded-full"
                   >
+
                     {symptom}
+
                   </span>
 
                 ))}
