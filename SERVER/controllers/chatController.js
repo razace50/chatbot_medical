@@ -1,4 +1,5 @@
 const Groq = require("groq-sdk");
+const Patient = require("../models/Patient");
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -6,28 +7,30 @@ const groq = new Groq({
 
 exports.chatWithPatient = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, patientId } = req.body;
 
-    const completion =
-      await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const patient = await Patient.findById(patientId);
 
-        messages: [
-          {
-            role: "system",
-            content: `
+    if (!patient) {
+      return res.status(404).json({
+        message: "Patient not found",
+      });
+    }
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+
+      messages: [
+        {
+          role: "system",
+          content: `
 You are acting as a real patient.
 
 Patient Details:
-- Name: John Smith
-- Age: 45
-- Disease: Gastritis
-
-Symptoms:
-- stomach pain
-- nausea
-- vomiting
-- heartburn
+- Name: ${patient.name}
+- Age: ${patient.age}
+- Disease: ${patient.disease}
+- Symptoms: ${patient.symptoms.join(", ")}
 
 Rules:
 - Reply like a human patient
@@ -35,18 +38,17 @@ Rules:
 - Do not act like AI
 - Only answer medical questions
 `,
-          },
+        },
 
-          {
-            role: "user",
-            content: message,
-          },
-        ],
-      });
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+    });
 
     res.json({
-      reply:
-        completion.choices[0].message.content,
+      reply: completion.choices[0].message.content,
     });
   } catch (error) {
     console.log(error);

@@ -1,10 +1,11 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
 
+const authRoutes = require("./routes/authRoutes");
+const patientRoutes = require("./routes/patientRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
@@ -18,6 +19,8 @@ app.get("/", (req, res) => {
   res.send("Backend Running");
 });
 
+app.use("/api/auth", authRoutes);
+app.use("/api/patients", patientRoutes);
 app.use("/api/chats", chatRoutes);
 
 const PORT = process.env.PORT || 5001;
